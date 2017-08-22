@@ -3,19 +3,20 @@
   /**
    * Sets the configuration of php at runtime
    */
-  ini_set('SMTP', 'WE PUT GMAIL SMTP HERE'); // Sets the php.ini config at runtime
+  ini_set('SMTP', 'smtp.gmail.com'); // Sets the php.ini config at runtime
   ini_set('smtp_port', 25);
 
   /**
    * Loads the config file config.php containing the databse details
    *
    */
+  $admin_email = 'abodunrin5@gmail.com';
   $config = include('config.php');
   $dsn = 'mysql:host='.$config['host'].';dbname='.$config['dbname'];
   $con = new PDO($dsn, $config['username'], $config['pass']);
 
   $exe = $con->query('SELECT * FROM password LIMIT 1');
-  $data = $exe->fetch(PDO_FETCH_ASSOC);
+  $data = $exe->fetch();
   $password = $data['password'];
 
   $error = []; // Sets the error to empty
@@ -43,8 +44,8 @@
        * Saving the sent data
        *
        */
-      $to = $_GET['email'];
-      $sent_pass = $_GET['password'];
+      $to = $_GET['to'];
+      $sent_password = $_GET['password'];
       $subject = $_GET['subject'];
       $message = $_GET['body'];
 
@@ -67,7 +68,7 @@
         /**
          * echo the errors out
          */
-        
+
       } else {
         /**
          * No error encontered, we can now send the mail.
