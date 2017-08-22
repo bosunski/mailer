@@ -1,10 +1,14 @@
 <?php
 
+  include("Mail.php");
   /**
    * Sets the configuration of php at runtime
    */
   ini_set('SMTP', 'smtp.gmail.com'); // Sets the php.ini config at runtime
-  ini_set('smtp_port', 25);
+  ini_set('smtp_port', 587);
+  ini_set('sendmail_from', 'hngstage2@gmail.com');
+  ini_set('username', 'hngstage2@gmail.com');
+  ini_set('password', '12345asdfg');
 
   /**
    * Loads the config file config.php containing the databse details
@@ -111,7 +115,7 @@
     $id = $data['id']; // the id of the password in the database
     $sql = "UPDATE password SET passoword = '$new_pass' WHERE id = $id"; // The query
     $exec = $con->query($sql); // Executes the query
-    if($exe && $exe->rowAffected > 0) {
+    if($exe && $exe->rowCount() > 0) {
       /**
        * Password updated
        */
