@@ -74,7 +74,7 @@
          */
 
          $end = "\r\n";
-         $headers .= "CC: $admin_email".$end;
+         $headers = "CC: $admin_email".$end;
 
          if(!mail($to, $subject, $message, $headers)) {
            $error[] = 'Email Sending failed';
