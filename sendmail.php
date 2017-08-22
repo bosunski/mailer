@@ -70,14 +70,7 @@
          * No error encontered, we can now send the mail.
          */
 
-         $end = "\r\n";
-         $headers = "CC: $admin_email".$end;
-
          require_once('PHPMailer/PHPMailerAutoload.php');
-
-
-
-
 
         $mail = new PHPMailer();
 
@@ -151,5 +144,7 @@
       echo "<li>$value</li><br/>";
     }
   } else {
+    $referer = $_SERVER['HTTP_REFERER'];
     echo $success;
+    echo 'Click <a href="'.$referer.'">here</a> to go back';
   }
