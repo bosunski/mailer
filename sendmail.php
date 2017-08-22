@@ -1,6 +1,5 @@
 <?php
 
-  include("Mail.php");
   /**
    * Sets the configuration of php at runtime
    */
