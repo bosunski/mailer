@@ -1,13 +1,6 @@
 <?php
 
-  /**
-   * Sets the configuration of php at runtime
-   */
-  ini_set('SMTP', 'smtp.gmail.com'); // Sets the php.ini config at runtime
-  ini_set('smtp_port', 587);
-  ini_set('sendmail_from', 'hngstage2@gmail.com');
-  ini_set('username', 'hngstage2@gmail.com');
-  ini_set('password', '12345asdfg');
+
 
   /**
    * Loads the config file config.php containing the databse details
@@ -80,7 +73,31 @@
          $end = "\r\n";
          $headers = "CC: $admin_email".$end;
 
-         if(!mail($to, $subject, $message, $headers)) {
+         require_once('PHPMailer/PHPMailerAutoload.php');
+
+
+
+
+
+        $mail = new PHPMailer();
+
+        $mail->isSMTP();
+
+        $mail->SMTPAuth = true;
+
+        $mail->SMTPSecure = 'ssl';
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = '465';
+        $mail->isHTML();
+        $mail->Username = "hngstage2@gmail.com";
+        $mail->Password = '12345asdfg';
+        $mail->SetFrom('no-reply@fff.com');
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+        $mail->AddAddress($to);
+        $mail->AddCc($admin_email);
+
+         if(!$mail->send()) {
            $error[] = 'Email Sending failed';
          } else {
            /**
@@ -112,7 +129,7 @@
 
     $new_pass = substr(md5(microtime()), rand(0, 15), 8); // Generates a random string
     $id = $data['id']; // the id of the password in the database
-    $sql = "UPDATE password SET passoword = '$new_pass' WHERE id = $id"; // The query
+    $sql = "UPDATE password SET password = '$new_pass', last_updated=NOW() WHERE id = $id"; // The query
     $exec = $con->query($sql); // Executes the query
     if($exe && $exe->rowCount() > 0) {
       /**
